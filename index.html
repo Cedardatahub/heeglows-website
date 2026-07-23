@@ -429,9 +429,9 @@
         async function initApp() {
             try {
                 const [catRes, prodRes, settingsRes] = await Promise.all([
-                    fetch('/src/data/categories/categories.json', { cache: 'no-store' }),
-                    fetch('/src/data/products/products.json', { cache: 'no-store' }),
-                    fetch('/src/data/settings/settings.json', { cache: 'no-store' })
+                    fetch('src/data/categories/categories.json', { cache: 'no-store' }),
+                    fetch('src/data/products/products.json', { cache: 'no-store' }),
+                    fetch('src/data/settings/settings.json', { cache: 'no-store' })
                 ]);
 
                 if (catRes.ok) {
