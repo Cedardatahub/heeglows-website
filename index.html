@@ -168,7 +168,7 @@
     <!-- Hero Section -->
     <section class="relative min-h-screen flex items-center overflow-hidden pt-20">
         <div class="absolute inset-0 hero-gradient opacity-90"></div>
-        <div id="hero-bg" class="absolute inset-0" style="background-size: cover; background-position: center; opacity: 0.3;"></div>
+        <div id="hero-bg" class="absolute inset-0" style="background-image: url('/images/IMG_2634.PNG'); background-size: cover; background-position: center; opacity: 0.3;"></div>
 
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
             <div class="max-w-2xl fade-in">
@@ -259,7 +259,7 @@
                     </a>
                 </div>
                 <div class="relative">
-                    <img id="about-img" src="" alt="Hee Glows Products" class="rounded-sm shadow-2xl w-full object-cover aspect-[4/5] bg-glow-burgundy-light/30">
+                    <img id="about-img" src="/images/IMG_2634.PNG" alt="Hee Glows Products" class="rounded-sm shadow-2xl w-full object-cover aspect-[4/5] bg-glow-burgundy-light/30">
                     <div class="absolute -bottom-6 -left-6 bg-glow-pink text-glow-burgundy p-6 rounded-sm shadow-xl hidden md:block">
                         <p class="font-serif text-3xl italic">Hee هي</p>
                         <p class="text-xs uppercase tracking-widest mt-1">Est. 2024</p>
@@ -310,19 +310,86 @@
     <script>
         const INSTAGRAM_HANDLE = "the.heeglows";
 
-        // No hardcoded data of any kind. Everything comes from the CMS JSON files.
-        let allCategories = [];
-        let allProducts = [];
+        // ============================================================
+        // 1. FALLBACK DATA (will show immediately)
+        //    This ensures the site is never empty.
+        // ============================================================
+        const fallbackCategories = [
+            {
+                name: "Lips",
+                slug: "lips",
+                description: "Luxurious lip products for every mood",
+                image: "/images/IMG_7359.PNG"
+            },
+            {
+                name: "Sun & Body",
+                slug: "sun-body",
+                description: "Beach essentials & tanning oils",
+                image: "/images/IMG_2628.PNG"
+            }
+        ];
 
-        // Decap CMS always saves file-collection "list" widgets wrapped as
-        // { "<fieldName>": [...] }. If you ever hand-edit a JSON file to be a
-        // bare array instead, this still works — it accepts both shapes.
+        const fallbackProducts = [
+            {
+                title: "Satiné",
+                category: "sun-body",
+                description: "A lightweight tanning oil that deeply nourishes the skin while enhancing a natural, sun-kissed glow. Leaves your skin soft, smooth, and beautifully bronzed without shimmer.",
+                image: "/images/IMG_2628.PNG"
+            },
+            {
+                title: "Lustra",
+                category: "sun-body",
+                description: "A nourishing tanning oil infused with delicate golden shimmer for a radiant, luminous finish. Hydrates the skin while enhancing your natural tan.",
+                image: "/images/IMG_2629.PNG"
+            },
+            {
+                title: "Solace",
+                category: "sun-body",
+                description: "A soothing after-sun cream that cools, hydrates, and comforts sun-exposed skin. Fast-absorbing and lightweight for soft, refreshed skin after every sun-filled day.",
+                image: "/images/IMG_2630.PNG"
+            },
+            {
+                title: "Velvet Lip Balm",
+                category: "lips",
+                description: "A luxurious lip balm that melts effortlessly into the lips, delivering deep hydration and lasting softness with a smooth, velvety finish.",
+                image: "/images/IMG_2627.PNG"
+            },
+            {
+                title: "Rose Glow",
+                category: "lips",
+                description: "A soft rosy pink gloss that leaves lips naturally radiant and hydrated.",
+                image: "/images/IMG_7359.PNG"
+            },
+            {
+                title: "Pink Metal",
+                category: "lips",
+                description: "A soft pink gloss with delicate shimmer for a luminous, glossy finish.",
+                image: "/images/IMG_7361.PNG"
+            },
+            {
+                title: "Cherry Crush",
+                category: "lips",
+                description: "A vibrant cherry pink gloss with rich color and a glass-like shine.",
+                image: "/images/IMG_7360.PNG"
+            }
+        ];
+
+        let allCategories = [...fallbackCategories];
+        let allProducts = [...fallbackProducts];
+        let cmsLoaded = false;
+
+        // ============================================================
+        // 2. Helper to extract list from CMS data
+        // ============================================================
         function extractList(data, fieldName) {
             if (Array.isArray(data)) return data;
             if (data && Array.isArray(data[fieldName])) return data[fieldName];
             return [];
         }
 
+        // ============================================================
+        // 3. Render functions (unchanged)
+        // ============================================================
         function generateOrderLink(productName) {
             const message = `Hi! I want to order ${productName}. My name is: ___ My phone: ___ My address: ___`;
             return `https://ig.me/m/${INSTAGRAM_HANDLE}?text=${encodeURIComponent(message)}`;
@@ -425,7 +492,9 @@
             document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Load everything from the CMS-managed JSON files. No fallback data.
+        // ============================================================
+        // 4. Main init: try CMS, fallback to fallback data
+        // ============================================================
         async function initApp() {
             try {
                 const [catRes, prodRes, settingsRes] = await Promise.all([
@@ -434,16 +503,34 @@
                     fetch('src/data/settings/settings.json', { cache: 'no-store' })
                 ]);
 
+                let cmsCategories = null;
+                let cmsProducts = null;
+
                 if (catRes.ok) {
                     const catData = await catRes.json();
-                    allCategories = extractList(catData, 'categories');
+                    cmsCategories = extractList(catData, 'categories');
+                    console.log('✅ CMS categories loaded:', cmsCategories.length);
+                } else {
+                    console.warn('⚠️ categories.json not found, using fallback.');
                 }
 
                 if (prodRes.ok) {
                     const prodData = await prodRes.json();
-                    allProducts = extractList(prodData, 'products');
+                    cmsProducts = extractList(prodData, 'products');
+                    console.log('✅ CMS products loaded:', cmsProducts.length);
+                } else {
+                    console.warn('⚠️ products.json not found, using fallback.');
                 }
 
+                // Override fallback only if CMS data exists and is not empty
+                if (cmsCategories && cmsCategories.length > 0) {
+                    allCategories = cmsCategories;
+                }
+                if (cmsProducts && cmsProducts.length > 0) {
+                    allProducts = cmsProducts;
+                }
+
+                // Settings
                 if (settingsRes.ok) {
                     const settings = await settingsRes.json();
                     if (settings.hero_image) {
@@ -453,21 +540,24 @@
                         document.getElementById('about-img').src = settings.about_image;
                     }
                 }
+
             } catch (error) {
-                console.error('Failed to load CMS data', error);
+                console.error('❌ Failed to load CMS data, using fallback.', error);
             }
 
+            // Render with whatever data we have (fallback or CMS)
             renderCategories(allCategories);
             renderFilterTabs(allCategories);
             renderProducts(allProducts);
         }
 
-        // Mobile menu
+        // ============================================================
+        // 5. Event listeners & startup
+        // ============================================================
         document.getElementById('menu-toggle').onclick = () => document.getElementById('mobile-menu').classList.add('open');
         document.getElementById('menu-close').onclick = closeMenu;
         function closeMenu() { document.getElementById('mobile-menu').classList.remove('open'); }
 
-        // Navbar scroll effect
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             if (window.scrollY > 50) {
@@ -477,7 +567,6 @@
             }
         });
 
-        // Filter "All" button
         document.querySelector('[data-filter="all"]').onclick = () => {
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelector('[data-filter="all"]').classList.add('active');
