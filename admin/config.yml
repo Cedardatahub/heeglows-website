@@ -8,37 +8,25 @@ public_folder: "/images"
 collections:
   - name: "categories"
     label: "Categories"
-    files:
-      - name: "categories"
-        label: "Categories List"
-        file: "src/data/categories/categories.json"
-        fields:
-          - label: "Categories"
-            name: "categories"
-            widget: "list"
-            summary: "{{fields.name}}"
-            fields:
-              - { label: "Name", name: "name", widget: "string" }
-              - { label: "Slug", name: "slug", widget: "string", hint: "Used to link products to this category — no spaces, e.g. sun-body" }
-              - { label: "Description", name: "description", widget: "string", required: false }
-              - { label: "Image", name: "image", widget: "image" }
+    folder: "src/data/categories"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string" }
+      - { label: "Description", name: "description", widget: "string", required: false }
+      - { label: "Image", name: "image", widget: "image" }
 
   - name: "products"
     label: "Products"
-    files:
-      - name: "products"
-        label: "Products List"
-        file: "src/data/products/products.json"
-        fields:
-          - label: "Products"
-            name: "products"
-            widget: "list"
-            summary: "{{fields.title}} — {{fields.price}}"
-            fields:
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "Price", name: "price", widget: "string" }
-              - { label: "Category", name: "category", widget: "string", hint: "Must exactly match a category's Slug field, e.g. lips" }
-              - { label: "Image", name: "image", widget: "image" }
+    folder: "src/data/products"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Price", name: "price", widget: "string" }
+      - { label: "Category", name: "category", widget: "string" }
+      - { label: "Image", name: "image", widget: "image" }
 
   - name: "settings"
     label: "Site Settings"
