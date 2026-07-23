@@ -419,40 +419,42 @@
 
         // Load everything from the CMS-managed JSON files. No fallback data.
         async function initApp() {
-            try {
-                const [catRes, prodRes, settingsRes] = await Promise.all([
-                    fetch('/src/data/categories/categories.json', { cache: 'no-store' }),
-                    fetch('/src/data/products/products.json', { cache: 'no-store' }),
-                    fetch('/src/data/settings/settings.json', { cache: 'no-store' })
-                ]);
+    try {
+        const [catRes, prodRes, settingsRes] = await Promise.all([
+            fetch('/src/data/categories/categories.json', { cache: 'no-store' }),
+            fetch('/src/data/products/products.json', { cache: 'no-store' }),
+            fetch('/src/data/settings/settings.json', { cache: 'no-store' })
+        ]);
 
-                if (catRes.ok) {
-                    const catData = await catRes.json();
-                    allCategories = catData.categories || [];
-                }
-
-                if (prodRes.ok) {
-                    const prodData = await prodRes.json();
-                    allProducts = prodData.products || [];
-                }
-
-                if (settingsRes.ok) {
-                    const settings = await settingsRes.json();
-                    if (settings.hero_image) {
-                        document.getElementById('hero-bg').style.backgroundImage = `url('${settings.hero_image}')`;
-                    }
-                    if (settings.about_image) {
-                        document.getElementById('about-img').src = settings.about_image;
-                    }
-                }
-            } catch (error) {
-                console.error('Failed to load CMS data', error);
-            }
-
-            renderCategories(allCategories);
-            renderFilterTabs(allCategories);
-            renderProducts(allProducts);
+        if (catRes.ok) {
+            const catData = await catRes.json();
+            // Handle both formats: { categories: [...] } or plain [...]
+            allCategories = Array.isArray(catData) ? catData : (catData.categories || []);
         }
+
+        if (prodRes.ok) {
+            const prodData = await prodRes.json();
+            // Handle both formats: { products: [...] } or plain [...]
+            allProducts = Array.isArray(prodData) ? prodData : (prodData.products || []);
+        }
+
+        if (settingsRes.ok) {
+            const settings = await settingsRes.json();
+            if (settings.hero_image) {
+                document.getElementById('hero-bg').style.backgroundImage = `url('${settings.hero_image}')`;
+            }
+            if (settings.about_image) {
+                document.getElementById('about-img').src = settings.about_image;
+            }
+        }
+    } catch (error) {
+        console.error('Failed to load CMS data', error);
+    }
+
+    renderCategories(allCategories);
+    renderFilterTabs(allCategories);
+    renderProducts(allProducts);
+}
 
         // Mobile menu
         document.getElementById('menu-toggle').onclick = () => document.getElementById('mobile-menu').classList.add('open');
