@@ -1,0 +1,51 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "categories"
+    label: "Categories"
+    files:
+      - name: "categories"
+        label: "Categories List"
+        file: "src/data/categories/categories.json"
+        fields:
+          - label: "Categories"
+            name: "categories"
+            widget: "list"
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Slug", name: "slug", widget: "string", hint: "Used to link products to this category — no spaces, e.g. sun-body" }
+              - { label: "Description", name: "description", widget: "string", required: false }
+              - { label: "Image", name: "image", widget: "image" }
+
+  - name: "products"
+    label: "Products"
+    files:
+      - name: "products"
+        label: "Products List"
+        file: "src/data/products/products.json"
+        fields:
+          - label: "Products"
+            name: "products"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Category", name: "category", widget: "string", hint: "Must exactly match a category's Slug field, e.g. lips" }
+              - { label: "Image", name: "image", widget: "image" }
+
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - name: "general"
+        label: "General Settings"
+        file: "src/data/settings/settings.json"
+        fields:
+          - { label: "Hero Background Image", name: "hero_image", widget: "image", required: false }
+          - { label: "About Section Image", name: "about_image", widget: "image", required: false }
