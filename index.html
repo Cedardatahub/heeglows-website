@@ -212,6 +212,7 @@
 
             <div id="no-categories" class="hidden text-center py-16">
                 <p class="text-glow-burgundy font-serif text-2xl">No categories available yet.</p>
+                <p class="text-glow-burgundy-light mt-2 text-sm">Add categories in the CMS to get started.</p>
             </div>
         </div>
     </section>
@@ -235,7 +236,7 @@
 
             <div id="no-products" class="hidden text-center py-16">
                 <p class="text-glow-burgundy font-serif text-2xl">No products available.</p>
-                <p class="text-glow-burgundy-light mt-2 text-sm">Check back soon for new arrivals.</p>
+                <p class="text-glow-burgundy-light mt-2 text-sm">Add products in the CMS to get started.</p>
             </div>
         </div>
     </section>
@@ -314,9 +315,14 @@
         let allCategories = [];
         let allProducts = [];
 
+        /**
+         * Generates the Instagram DM link with pre-filled message
+         * Uses the direct chat format for better compatibility
+         */
         function generateOrderLink(productName) {
             const message = `Hi! I want to order ${productName}. My name is: ___ My phone: ___ My address: ___`;
-            return `https://ig.me/m/${INSTAGRAM_HANDLE}?text=${encodeURIComponent(message)}`;
+            // Use direct chat URL format for better compatibility
+            return `https://www.instagram.com/direct/t/${INSTAGRAM_HANDLE}/?text=${encodeURIComponent(message)}`;
         }
 
         function renderCategories(categories) {
@@ -394,7 +400,7 @@
                         <div class="p-6 text-center">
                             <h3 class="font-serif text-2xl text-glow-burgundy-dark mb-2">${product.title}</h3>
                             <p class="text-glow-burgundy-light font-medium mb-4">${product.price}</p>
-                            <a href="${orderLink}" target="_blank" class="btn-primary inline-block w-full px-6 py-3 uppercase tracking-widest text-xs font-semibold rounded-full">
+                            <a href="${orderLink}" target="_blank" rel="noopener noreferrer" class="btn-primary inline-block w-full px-6 py-3 uppercase tracking-widest text-xs font-semibold rounded-full">
                                 Order via DM
                             </a>
                         </div>
@@ -417,44 +423,54 @@
             document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Load everything from the CMS-managed JSON files. No fallback data.
+        /**
+         * Load everything from the CMS-managed JSON files.
+         * No fallback data — if the CMS is empty, the site shows "No products available."
+         */
         async function initApp() {
-    try {
-        const [catRes, prodRes, settingsRes] = await Promise.all([
-            fetch('/src/data/categories/categories.json', { cache: 'no-store' }),
-            fetch('/src/data/products/products.json', { cache: 'no-store' }),
-            fetch('/src/data/settings/settings.json', { cache: 'no-store' })
-        ]);
+            try {
+                const [catRes, prodRes, settingsRes] = await Promise.all([
+                    fetch('/src/data/categories/categories.json', { cache: 'no-store' }),
+                    fetch('/src/data/products/products.json', { cache: 'no-store' }),
+                    fetch('/src/data/settings/settings.json', { cache: 'no-store' })
+                ]);
 
-        if (catRes.ok) {
-            const catData = await catRes.json();
-            // Handle both formats: { categories: [...] } or plain [...]
-            allCategories = Array.isArray(catData) ? catData : (catData.categories || []);
-        }
+                if (catRes.ok) {
+                    const catData = await catRes.json();
+                    // Handle both formats: { categories: [...] } or plain [...]
+                    allCategories = Array.isArray(catData) ? catData : (catData.categories || []);
+                    console.log('✅ Categories loaded:', allCategories.length);
+                } else {
+                    console.warn('⚠️ Categories file not found. Check that src/data/categories/categories.json exists.');
+                }
 
-        if (prodRes.ok) {
-            const prodData = await prodRes.json();
-            // Handle both formats: { products: [...] } or plain [...]
-            allProducts = Array.isArray(prodData) ? prodData : (prodData.products || []);
-        }
+                if (prodRes.ok) {
+                    const prodData = await prodRes.json();
+                    // Handle both formats: { products: [...] } or plain [...]
+                    allProducts = Array.isArray(prodData) ? prodData : (prodData.products || []);
+                    console.log('✅ Products loaded:', allProducts.length);
+                } else {
+                    console.warn('⚠️ Products file not found. Check that src/data/products/products.json exists.');
+                }
 
-        if (settingsRes.ok) {
-            const settings = await settingsRes.json();
-            if (settings.hero_image) {
-                document.getElementById('hero-bg').style.backgroundImage = `url('${settings.hero_image}')`;
+                if (settingsRes.ok) {
+                    const settings = await settingsRes.json();
+                    if (settings.hero_image) {
+                        document.getElementById('hero-bg').style.backgroundImage = `url('${settings.hero_image}')`;
+                    }
+                    if (settings.about_image) {
+                        document.getElementById('about-img').src = settings.about_image;
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Failed to load CMS data:', error);
             }
-            if (settings.about_image) {
-                document.getElementById('about-img').src = settings.about_image;
-            }
-        }
-    } catch (error) {
-        console.error('Failed to load CMS data', error);
-    }
 
-    renderCategories(allCategories);
-    renderFilterTabs(allCategories);
-    renderProducts(allProducts);
-}
+            // Render with whatever data we have (empty arrays if nothing loaded)
+            renderCategories(allCategories);
+            renderFilterTabs(allCategories);
+            renderProducts(allProducts);
+        }
 
         // Mobile menu
         document.getElementById('menu-toggle').onclick = () => document.getElementById('mobile-menu').classList.add('open');
