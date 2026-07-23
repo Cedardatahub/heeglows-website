@@ -117,6 +117,18 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(99, 6, 37, 0.4);
         }
+
+        /* FIX: Full image coverage for hero and about */
+        .hero-bg-image {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .about-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
@@ -168,7 +180,7 @@
     <!-- Hero Section -->
     <section class="relative min-h-screen flex items-center overflow-hidden pt-20">
         <div class="absolute inset-0 hero-gradient opacity-90"></div>
-        <div id="hero-bg" class="absolute inset-0" style="background-image: url('/images/IMG_2634.PNG'); background-size: cover; background-position: center; opacity: 0.3;"></div>
+        <div id="hero-bg" class="absolute inset-0 hero-bg-image" style="background-image: url('/images/IMG_2634.PNG'); opacity: 0.3;"></div>
 
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
             <div class="max-w-2xl fade-in">
@@ -259,7 +271,7 @@
                     </a>
                 </div>
                 <div class="relative">
-                    <img id="about-img" src="/images/IMG_2634.PNG" alt="Hee Glows Products" class="rounded-sm shadow-2xl w-full object-cover aspect-[4/5] bg-glow-burgundy-light/30">
+                    <img id="about-img" src="/images/IMG_2634.PNG" alt="Hee Glows Products" class="about-img rounded-sm shadow-2xl aspect-[4/5] bg-glow-burgundy-light/30">
                     <div class="absolute -bottom-6 -left-6 bg-glow-pink text-glow-burgundy p-6 rounded-sm shadow-xl hidden md:block">
                         <p class="font-serif text-3xl italic">Hee هي</p>
                         <p class="text-xs uppercase tracking-widest mt-1">Est. 2024</p>
@@ -312,7 +324,6 @@
 
         // ============================================================
         // 1. FALLBACK DATA (will show immediately)
-        //    This ensures the site is never empty.
         // ============================================================
         const fallbackCategories = [
             {
@@ -388,13 +399,20 @@
         }
 
         // ============================================================
-        // 3. Render functions (unchanged)
+        // 3. FIXED: Instagram DM link with proper URL encoding
         // ============================================================
         function generateOrderLink(productName) {
+            // Use the direct chat format for better compatibility
             const message = `Hi! I want to order ${productName}. My name is: ___ My phone: ___ My address: ___`;
-            return `https://ig.me/m/${INSTAGRAM_HANDLE}?text=${encodeURIComponent(message)}`;
+            // Properly encode the message for URL
+            const encodedMessage = encodeURIComponent(message);
+            // Use ig.me/m format which works on both mobile and desktop
+            return `https://ig.me/m/${INSTAGRAM_HANDLE}?text=${encodedMessage}`;
         }
 
+        // ============================================================
+        // 4. Render functions
+        // ============================================================
         function renderCategories(categories) {
             const grid = document.getElementById('categories-grid');
             const noCategories = document.getElementById('no-categories');
@@ -493,7 +511,7 @@
         }
 
         // ============================================================
-        // 4. Main init: try CMS, fallback to fallback data
+        // 5. Main init: try CMS, fallback to fallback data
         // ============================================================
         async function initApp() {
             try {
@@ -552,7 +570,7 @@
         }
 
         // ============================================================
-        // 5. Event listeners & startup
+        // 6. Event listeners & startup
         // ============================================================
         document.getElementById('menu-toggle').onclick = () => document.getElementById('mobile-menu').classList.add('open');
         document.getElementById('menu-close').onclick = closeMenu;
