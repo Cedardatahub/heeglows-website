@@ -1,3 +1,10 @@
 {
-  "categories": []
+  "categories": [
+    {
+      "name": "Fragrance",
+      "slug": "fragrance",
+      "description": "RI&A HELWE BANETEYE",
+      "image": "/images/IMG_2629.PNG"
+    }
+  ]
 }
