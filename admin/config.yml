@@ -19,7 +19,7 @@ collections:
             summary: "{{fields.name}}"
             fields:
               - { label: "Name", name: "name", widget: "string" }
-              - { label: "Slug", name: "slug", widget: "string", hint: "Used to link products to this category — no spaces, e.g. sun-body" }
+              - { label: "Slug", name: "slug", widget: "string", hint: "Used to link products to this category — no spaces, e.g. lip-collection" }
               - { label: "Description", name: "description", widget: "string", required: false }
               - { label: "Image", name: "image", widget: "image" }
 
@@ -36,8 +36,9 @@ collections:
             summary: "{{fields.title}}"
             fields:
               - { label: "Title", name: "title", widget: "string" }
+              - { label: "Price", name: "price", widget: "string" }
+              - { label: "Category", name: "category", widget: "string", hint: "Must exactly match a category's Slug field, e.g. lip-collection" }
               - { label: "Description", name: "description", widget: "text" }
-              - { label: "Category", name: "category", widget: "string", hint: "Must exactly match a category's Slug field, e.g. lips" }
               - { label: "Image", name: "image", widget: "image" }
 
   - name: "settings"
