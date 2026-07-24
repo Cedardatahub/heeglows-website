@@ -3,11 +3,14 @@
     {
       "name": "Lips",
       "slug": "lips",
-      "description": "Bold & beautiful lip products",
-      "image": "https://image.qwenlm.ai/public_source/091621fc-7127-42da-986e-d7c05fcca0f6/1e55c998f-03f7-48a0-ab73-509c882fa41f.png"
+      "description": "Luxurious lip products for every mood",
+      "image": "/images/IMG_7359.PNG"
     },
-        {
+    {
       "name": "Sun & Body",
       "slug": "sun-body",
       "description": "Beach essentials & tanning oils",
-      "image": "https://image.qwenlm.ai/public_source/091621fc-7127-42da-986e-d7c05fcca0f6/167e2b54a-2279-457f-a905-d7ede4043a4f.png"
+      "image": "/images/IMG_2628.PNG"
+    }
+  ]
+}
