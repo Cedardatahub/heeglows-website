@@ -27,6 +27,13 @@
       "category": "lip-collection",
       "description": "A soft pink gloss with delicate shimmer for a luminous, glossy finish.",
       "image": "/images/IMG_7360.PNG"
+    },
+    {
+      "category": "hair-collection",
+      "title": "Marshmallow Silk",
+      "price": "20",
+      "description": "A nourishing leave-in mist that hydrates, smooths, and protects your hair without weighing it down. Finished with a soft marshmallow scent you’ll want to wear every day.",
+      "image": "/images/whatsapp-image-2026-07-24-at-4.25.02-pm.jpeg"
     }
   ]
 }
