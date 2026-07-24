@@ -118,7 +118,7 @@
             box-shadow: 0 8px 20px rgba(99, 6, 37, 0.4);
         }
 
-        /* FIX: Full image coverage for hero and about */
+        /* FIX: Full image coverage */
         .hero-section {
             min-height: 100vh;
         }
@@ -134,6 +134,7 @@
         }
         .about-img-wrapper {
             width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -145,8 +146,9 @@
             object-fit: cover;
         }
         @media (max-width: 768px) {
-            .about-img-wrapper {
-                max-height: 60vh;
+            .hero-bg-image {
+                background-size: contain; /* Prevents zoom on mobile */
+                background-position: center;
             }
             .about-img-wrapper img {
                 object-fit: contain;
@@ -293,8 +295,8 @@
                         <span>@the.heeglows</span>
                     </a>
                 </div>
-                <div class="relative about-img-wrapper">
-                    <img id="about-img" src="/images/IMG_2634.PNG" alt="Hee Glows Products" class="rounded-sm shadow-2xl w-full h-full object-cover aspect-[4/5] bg-glow-burgundy-light/30">
+                <div class="relative w-full h-full about-img-wrapper">
+                    <img id="about-img" src="/images/IMG_2634.PNG" alt="Hee Glows Products" class="rounded-sm shadow-2xl w-full h-full object-cover bg-glow-burgundy-light/30">
                     <div class="absolute -bottom-6 -left-6 bg-glow-pink text-glow-burgundy p-6 rounded-sm shadow-xl hidden md:block">
                         <p class="font-serif text-3xl italic">Hee هي</p>
                         <p class="text-xs uppercase tracking-widest mt-1">Est. 2024</p>
@@ -421,17 +423,39 @@
         }
 
         // ============================================================
-        // FIXED: Instagram DM link - always autofills the message
+        // INSTAGRAM DM with COPY FALLBACK
         // ============================================================
         function generateOrderLink(productName) {
             const message = `Hi! I want to order ${productName}. My name is: ___ My phone: ___ My address: ___`;
-            const encodedMessage = encodeURIComponent(message);
-            // Use the standard Instagram direct message URL (more reliable)
-            return `https://www.instagram.com/direct/t/${INSTAGRAM_HANDLE}/?text=${encodedMessage}`;
+            const encoded = encodeURIComponent(message);
+            return `https://www.instagram.com/direct/t/${INSTAGRAM_HANDLE}/?text=${encoded}`;
+        }
+
+        function copyMessage(productName) {
+            const message = `Hi! I want to order ${productName}. My name is: ___ My phone: ___ My address: ___`;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(message).then(() => {
+                    alert('✅ Message copied to clipboard! Now paste it in Instagram DM.');
+                }).catch(() => {
+                    fallbackCopy(message);
+                });
+            } else {
+                fallbackCopy(message);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('✅ Message copied to clipboard! Now paste it in Instagram DM.');
         }
 
         // ============================================================
-        // RENDER FUNCTIONS
+        // RENDER FUNCTIONS (updated with copy button)
         // ============================================================
         function renderCategories(categories) {
             const grid = document.getElementById('categories-grid');
@@ -507,9 +531,14 @@
                         <div class="p-6 text-center">
                             <h3 class="font-serif text-2xl text-glow-burgundy-dark mb-3">${product.title}</h3>
                             <p class="text-glow-burgundy text-sm mb-5 leading-relaxed">${product.description || ''}</p>
-                            <a href="${orderLink}" target="_blank" rel="noopener noreferrer" class="btn-primary inline-block w-full px-6 py-3 uppercase tracking-widest text-xs font-semibold rounded-full">
-                                Order via DM
-                            </a>
+                            <div class="flex flex-col gap-2">
+                                <a href="${orderLink}" target="_blank" rel="noopener noreferrer" class="btn-primary inline-block w-full px-6 py-3 uppercase tracking-widest text-xs font-semibold rounded-full">
+                                    Order via DM
+                                </a>
+                                <button onclick="copyMessage('${product.title}')" class="text-xs text-glow-burgundy underline hover:text-glow-burgundy-dark">
+                                    📋 Copy message instead
+                                </button>
+                            </div>
                         </div>
                     `;
                     grid.appendChild(card);
