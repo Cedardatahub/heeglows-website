@@ -1,16 +1,28 @@
 {
   "categories": [
     {
-      "name": "Lips",
-      "slug": "lips",
+      "name": "Lip Collection",
+      "slug": "lip-collection",
       "description": "Luxurious lip products for every mood",
-      "image": "/images/IMG_7359.PNG"
+      "image": "/images/IMG_2643.PNG"
     },
     {
-      "name": "Sun & Body",
-      "slug": "sun-body",
-      "description": "Beach essentials & tanning oils",
-      "image": "/images/IMG_2628.PNG"
+      "name": "Beach Essentials",
+      "slug": "beach-essentials",
+      "description": "Tan. Glow. Care.",
+      "image": "/images/IMG_2637.PNG"
+    },
+    {
+      "name": "Hair Collection",
+      "slug": "hair-collection",
+      "description": "Hair care essentials",
+      "image": "/images/IMG_2645.PNG"
+    },
+    {
+      "name": "Perfume",
+      "slug": "perfume",
+      "description": "Scents that stay",
+      "image": "/images/IMG_2683.PNG"
     }
   ]
 }
