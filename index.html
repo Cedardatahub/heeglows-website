@@ -147,7 +147,7 @@
         }
         @media (max-width: 768px) {
             .hero-bg-image {
-                background-size: contain; /* Prevents zoom on mobile */
+                background-size: contain;
                 background-position: center;
             }
             .about-img-wrapper img {
@@ -428,7 +428,8 @@
         function generateOrderLink(productName) {
             const message = `Hi! I want to order ${productName}. My name is: ___ My phone: ___ My address: ___`;
             const encoded = encodeURIComponent(message);
-            return `https://www.instagram.com/direct/t/${INSTAGRAM_HANDLE}/?text=${encoded}`;
+            // Use ig.me/m which reliably opens the chat (autofill may still fail, but copy button covers it)
+            return `https://ig.me/m/${INSTAGRAM_HANDLE}?text=${encoded}`;
         }
 
         function copyMessage(productName) {
@@ -455,7 +456,7 @@
         }
 
         // ============================================================
-        // RENDER FUNCTIONS (updated with copy button)
+        // RENDER FUNCTIONS
         // ============================================================
         function renderCategories(categories) {
             const grid = document.getElementById('categories-grid');
