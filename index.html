@@ -118,24 +118,39 @@
             box-shadow: 0 8px 20px rgba(99, 6, 37, 0.4);
         }
 
-        /* FULL IMAGE COVER */
+        /* FIX: Full image coverage for hero and about */
+        .hero-section {
+            min-height: 100vh;
+        }
         .hero-bg-image {
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-        }
-        .about-img-container {
             width: 100%;
             height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .about-img-wrapper {
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
         }
-        .about-img-container img {
+        .about-img-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+        @media (max-width: 768px) {
+            .about-img-wrapper {
+                max-height: 60vh;
+            }
+            .about-img-wrapper img {
+                object-fit: contain;
+            }
         }
     </style>
 </head>
@@ -186,9 +201,9 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center overflow-hidden pt-20">
+    <section class="relative min-h-screen flex items-center overflow-hidden pt-20 hero-section">
         <div class="absolute inset-0 hero-gradient opacity-90"></div>
-        <div id="hero-bg" class="absolute inset-0 hero-bg-image" style="background-image: url('/images/IMG_2634.PNG'); opacity: 0.3;"></div>
+        <div id="hero-bg" class="hero-bg-image" style="background-image: url('/images/IMG_2634.PNG'); opacity: 0.3;"></div>
 
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
             <div class="max-w-2xl fade-in">
@@ -278,7 +293,7 @@
                         <span>@the.heeglows</span>
                     </a>
                 </div>
-                <div class="relative w-full about-img-container">
+                <div class="relative about-img-wrapper">
                     <img id="about-img" src="/images/IMG_2634.PNG" alt="Hee Glows Products" class="rounded-sm shadow-2xl w-full h-full object-cover aspect-[4/5] bg-glow-burgundy-light/30">
                     <div class="absolute -bottom-6 -left-6 bg-glow-pink text-glow-burgundy p-6 rounded-sm shadow-xl hidden md:block">
                         <p class="font-serif text-3xl italic">Hee هي</p>
@@ -411,7 +426,8 @@
         function generateOrderLink(productName) {
             const message = `Hi! I want to order ${productName}. My name is: ___ My phone: ___ My address: ___`;
             const encodedMessage = encodeURIComponent(message);
-            return `https://ig.me/m/${INSTAGRAM_HANDLE}?text=${encodedMessage}`;
+            // Use the standard Instagram direct message URL (more reliable)
+            return `https://www.instagram.com/direct/t/${INSTAGRAM_HANDLE}/?text=${encodedMessage}`;
         }
 
         // ============================================================
