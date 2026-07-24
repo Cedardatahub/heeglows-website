@@ -118,13 +118,21 @@
             box-shadow: 0 8px 20px rgba(99, 6, 37, 0.4);
         }
 
-        /* FIX: Full image coverage for hero and about */
+        /* FULL IMAGE COVER */
         .hero-bg-image {
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
         }
-        .about-img {
+        .about-img-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .about-img-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -270,8 +278,8 @@
                         <span>@the.heeglows</span>
                     </a>
                 </div>
-                <div class="relative">
-                    <img id="about-img" src="/images/IMG_2634.PNG" alt="Hee Glows Products" class="about-img rounded-sm shadow-2xl aspect-[4/5] bg-glow-burgundy-light/30">
+                <div class="relative w-full about-img-container">
+                    <img id="about-img" src="/images/IMG_2634.PNG" alt="Hee Glows Products" class="rounded-sm shadow-2xl w-full h-full object-cover aspect-[4/5] bg-glow-burgundy-light/30">
                     <div class="absolute -bottom-6 -left-6 bg-glow-pink text-glow-burgundy p-6 rounded-sm shadow-xl hidden md:block">
                         <p class="font-serif text-3xl italic">Hee هي</p>
                         <p class="text-xs uppercase tracking-widest mt-1">Est. 2024</p>
@@ -323,7 +331,7 @@
         const INSTAGRAM_HANDLE = "the.heeglows";
 
         // ============================================================
-        // 1. FALLBACK DATA (will show immediately)
+        // FALLBACK DATA (shows immediately, ensures site is never empty)
         // ============================================================
         const fallbackCategories = [
             {
@@ -387,10 +395,9 @@
 
         let allCategories = [...fallbackCategories];
         let allProducts = [...fallbackProducts];
-        let cmsLoaded = false;
 
         // ============================================================
-        // 2. Helper to extract list from CMS data
+        // HELPER: Extract list from CMS data (handles both formats)
         // ============================================================
         function extractList(data, fieldName) {
             if (Array.isArray(data)) return data;
@@ -399,19 +406,16 @@
         }
 
         // ============================================================
-        // 3. FIXED: Instagram DM link with proper URL encoding
+        // FIXED: Instagram DM link - always autofills the message
         // ============================================================
         function generateOrderLink(productName) {
-            // Use the direct chat format for better compatibility
             const message = `Hi! I want to order ${productName}. My name is: ___ My phone: ___ My address: ___`;
-            // Properly encode the message for URL
             const encodedMessage = encodeURIComponent(message);
-            // Use ig.me/m format which works on both mobile and desktop
             return `https://ig.me/m/${INSTAGRAM_HANDLE}?text=${encodedMessage}`;
         }
 
         // ============================================================
-        // 4. Render functions
+        // RENDER FUNCTIONS
         // ============================================================
         function renderCategories(categories) {
             const grid = document.getElementById('categories-grid');
@@ -511,7 +515,7 @@
         }
 
         // ============================================================
-        // 5. Main init: try CMS, fallback to fallback data
+        // MAIN INIT: Load CMS data, fallback if fails
         // ============================================================
         async function initApp() {
             try {
@@ -527,28 +531,21 @@
                 if (catRes.ok) {
                     const catData = await catRes.json();
                     cmsCategories = extractList(catData, 'categories');
-                    console.log('✅ CMS categories loaded:', cmsCategories.length);
-                } else {
-                    console.warn('⚠️ categories.json not found, using fallback.');
+                    if (cmsCategories && cmsCategories.length > 0) {
+                        allCategories = cmsCategories;
+                        console.log('✅ CMS categories loaded:', allCategories.length);
+                    }
                 }
 
                 if (prodRes.ok) {
                     const prodData = await prodRes.json();
                     cmsProducts = extractList(prodData, 'products');
-                    console.log('✅ CMS products loaded:', cmsProducts.length);
-                } else {
-                    console.warn('⚠️ products.json not found, using fallback.');
+                    if (cmsProducts && cmsProducts.length > 0) {
+                        allProducts = cmsProducts;
+                        console.log('✅ CMS products loaded:', allProducts.length);
+                    }
                 }
 
-                // Override fallback only if CMS data exists and is not empty
-                if (cmsCategories && cmsCategories.length > 0) {
-                    allCategories = cmsCategories;
-                }
-                if (cmsProducts && cmsProducts.length > 0) {
-                    allProducts = cmsProducts;
-                }
-
-                // Settings
                 if (settingsRes.ok) {
                     const settings = await settingsRes.json();
                     if (settings.hero_image) {
@@ -560,17 +557,16 @@
                 }
 
             } catch (error) {
-                console.error('❌ Failed to load CMS data, using fallback.', error);
+                console.log('ℹ️ Using fallback data (CMS not loaded)');
             }
 
-            // Render with whatever data we have (fallback or CMS)
             renderCategories(allCategories);
             renderFilterTabs(allCategories);
             renderProducts(allProducts);
         }
 
         // ============================================================
-        // 6. Event listeners & startup
+        // EVENT LISTENERS
         // ============================================================
         document.getElementById('menu-toggle').onclick = () => document.getElementById('mobile-menu').classList.add('open');
         document.getElementById('menu-close').onclick = closeMenu;
