@@ -243,7 +243,7 @@
                 <div class="section-divider"></div>
             </div>
 
-            <div id="categories-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div id="categories-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
                 <!-- Categories rendered here -->
             </div>
 
@@ -266,7 +266,7 @@
                 </div>
             </div>
 
-            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Products rendered here -->
             </div>
 
@@ -352,60 +352,58 @@
         // ============================================================
         const fallbackCategories = [
             {
-                name: "Lips",
-                slug: "lips",
+                name: "Lip Collection",
+                slug: "lip-collection",
                 description: "Luxurious lip products for every mood",
-                image: "/images/IMG_7359.PNG"
+                image: "/images/IMG_2643.PNG"
             },
             {
-                name: "Sun & Body",
-                slug: "sun-body",
-                description: "Beach essentials & tanning oils",
-                image: "/images/IMG_2628.PNG"
+                name: "Beach Essentials",
+                slug: "beach-essentials",
+                description: "Tan. Glow. Care.",
+                image: "/images/IMG_2637.PNG"
+            },
+            {
+                name: "Hair Collection",
+                slug: "hair-collection",
+                description: "Hair care essentials",
+                image: "/images/IMG_2645.PNG"
+            },
+            {
+                name: "Perfume",
+                slug: "perfume",
+                description: "Scents that stay",
+                image: "/images/IMG_2683.PNG"
             }
         ];
 
         const fallbackProducts = [
             {
-                title: "Satiné",
-                category: "sun-body",
-                description: "A lightweight tanning oil that deeply nourishes the skin while enhancing a natural, sun-kissed glow. Leaves your skin soft, smooth, and beautifully bronzed without shimmer.",
-                image: "/images/IMG_2628.PNG"
-            },
-            {
-                title: "Lustra",
-                category: "sun-body",
-                description: "A nourishing tanning oil infused with delicate golden shimmer for a radiant, luminous finish. Hydrates the skin while enhancing your natural tan.",
-                image: "/images/IMG_2629.PNG"
-            },
-            {
-                title: "Solace",
-                category: "sun-body",
-                description: "A soothing after-sun cream that cools, hydrates, and comforts sun-exposed skin. Fast-absorbing and lightweight for soft, refreshed skin after every sun-filled day.",
-                image: "/images/IMG_2630.PNG"
-            },
-            {
                 title: "Velvet Lip Balm",
-                category: "lips",
+                price: "$10.00",
+                category: "lip-collection",
                 description: "A luxurious lip balm that melts effortlessly into the lips, delivering deep hydration and lasting softness with a smooth, velvety finish.",
                 image: "/images/IMG_2627.PNG"
             },
             {
                 title: "Rose Glow",
-                category: "lips",
+                price: "$8.00",
+                category: "lip-collection",
                 description: "A soft rosy pink gloss that leaves lips naturally radiant and hydrated.",
                 image: "/images/IMG_7359.PNG"
             },
             {
-                title: "Pink Metal",
-                category: "lips",
-                description: "A soft pink gloss with delicate shimmer for a luminous, glossy finish.",
+                title: "Cherry Crush",
+                price: "$8.00",
+                category: "lip-collection",
+                description: "A vibrant cherry pink gloss with rich color and a glass-like shine.",
                 image: "/images/IMG_7361.PNG"
             },
             {
-                title: "Cherry Crush",
-                category: "lips",
-                description: "A vibrant cherry pink gloss with rich color and a glass-like shine.",
+                title: "Pink Metal",
+                price: "$8.00",
+                category: "lip-collection",
+                description: "A soft pink gloss with delicate shimmer for a luminous, glossy finish.",
                 image: "/images/IMG_7360.PNG"
             }
         ];
@@ -428,7 +426,6 @@
         function generateOrderLink(productName) {
             const message = `Hi! I want to order ${productName}. My name is: ___ My phone: ___ My address: ___`;
             const encoded = encodeURIComponent(message);
-            // Use ig.me/m which reliably opens the chat (autofill may still fail, but copy button covers it)
             return `https://ig.me/m/${INSTAGRAM_HANDLE}?text=${encoded}`;
         }
 
@@ -530,8 +527,9 @@
                             </div>
                         </div>
                         <div class="p-6 text-center">
-                            <h3 class="font-serif text-2xl text-glow-burgundy-dark mb-3">${product.title}</h3>
-                            <p class="text-glow-burgundy text-sm mb-5 leading-relaxed">${product.description || ''}</p>
+                            <h3 class="font-serif text-2xl text-glow-burgundy-dark mb-2">${product.title}</h3>
+                            <p class="text-glow-burgundy text-sm mb-2 leading-relaxed">${product.description || ''}</p>
+                            <p class="text-glow-burgundy-dark font-bold text-lg mb-4">${product.price || ''}</p>
                             <div class="flex flex-col gap-2">
                                 <a href="${orderLink}" target="_blank" rel="noopener noreferrer" class="btn-primary inline-block w-full px-6 py-3 uppercase tracking-widest text-xs font-semibold rounded-full">
                                     Order via DM
