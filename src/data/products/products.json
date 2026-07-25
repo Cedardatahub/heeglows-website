@@ -29,13 +29,6 @@
       "image": "/images/IMG_7360.PNG"
     },
     {
-      "image": "/images/1000026347.png",
-      "description": "Natural Tanning Oil – Shimmery.  \n\n\nA nourishing tanning oil infused with delicate golden shimmer for a radiant, luminous finish. Hydrates the skin while enhancing your natural tan.",
-      "title": "Lustra",
-      "price": "$15.00",
-      "category": "beach-essentials"
-    },
-    {
       "description": "Natural Tanning Oil – Non Shimmery.  \n\n\nA lightweight tanning oil that deeply nourishes the skin while enhancing a natural, sun-kissed glow. Leaves your skin soft, smooth, and beautifully bronzed without shimmer.",
       "title": "Satiné",
       "price": "$15.00",
@@ -43,11 +36,25 @@
       "image": "/images/1000026783.png"
     },
     {
+      "image": "/images/1000026347.png",
+      "description": "Natural Tanning Oil – Shimmery.  \n\n\nA nourishing tanning oil infused with delicate golden shimmer for a radiant, luminous finish. Hydrates the skin while enhancing your natural tan.",
+      "title": "Lustra",
+      "price": "$15.00",
+      "category": "beach-essentials"
+    },
+    {
       "description": "Cooling After Sun Cream.  \n\n\nA soothing after-sun cream that cools, hydrates, and comforts sun-exposed skin. Fast-absorbing and lightweight for soft, refreshed skin after every sun-filled day.",
       "image": "/images/1000026350.png",
       "title": "Solace",
       "price": "$13.00",
       "category": "beach-essentials"
+    },
+    {
+      "description": "Marshmallow Silk.  \n\n\nA nourishing leave-in mist that hydrates, smooths, and protects your hair without weighing it down. Finished with a soft marshmallow scent you’ll want to wear every day.",
+      "title": "Marshmallow Silk",
+      "price": "$14.00",
+      "category": "hair-collection",
+      "image": "/images/1000027025.jpg"
     }
   ]
 }
