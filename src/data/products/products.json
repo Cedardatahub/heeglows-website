@@ -41,6 +41,13 @@
       "price": "$15.00",
       "category": "beach-essentials",
       "image": "/images/1000026783.png"
+    },
+    {
+      "description": "Cooling After Sun Cream.  \n\n\nA soothing after-sun cream that cools, hydrates, and comforts sun-exposed skin. Fast-absorbing and lightweight for soft, refreshed skin after every sun-filled day.",
+      "image": "/images/1000026350.png",
+      "title": "Solace",
+      "price": "$13.00",
+      "category": "beach-essentials"
     }
   ]
 }
