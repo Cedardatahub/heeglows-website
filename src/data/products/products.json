@@ -34,6 +34,13 @@
       "title": "Lustra",
       "price": "$15.00",
       "category": "beach-essentials"
+    },
+    {
+      "description": "Natural Tanning Oil – Non Shimmery.  \n\n\nA lightweight tanning oil that deeply nourishes the skin while enhancing a natural, sun-kissed glow. Leaves your skin soft, smooth, and beautifully bronzed without shimmer.",
+      "title": "Satiné",
+      "price": "$15.00",
+      "category": "beach-essentials",
+      "image": "/images/1000026783.png"
     }
   ]
 }
